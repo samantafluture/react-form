@@ -1,0 +1,82 @@
+===================
+FUNCTION COMPONENTS
+===================
+
+FRAGMENT
+========
+- não é renderizado
+- só faz a função de retornar um único elemento pai 
+- para cumprir essa regra do react
+- encapsula todos os elementos filhos
+
+RETURN
+======
+- quando criamos um componente de função, seu retorno precisa ser a árvore de renderização jsx
+- que este componente vai desenhar
+- não guardam estado
+
+HOOKS
+=====
+- usamos hooks para guardar estados dentro de uma função que representa um componente
+- normalmente uma função é executada uma vez e não guarda estado
+- como guardar estado em function components então?
+- foram criados os hooks
+- usar state sem precisar escrever uma classe
+- o mais comum: useState
+
+USESTATE
+========
+- hook
+- devolve suas informações: 1. refer6encia para o valor do estado atual (variável); 2. função que altera esse estado
+- exemplo
+    const [nome, setNome] = useState("");
+    essa maneira acima é a mesma coisa que a abaixo:
+        const arr = useState("");
+        const nome = arr[0];
+        const setNome = arr[1];
+- precisamos desta separação para que o react consiga fazer o gerenciamento do componente e chamar o ciclo de renderização quando o estado for alterado
+- assim o react consegue fazer a sincronização entre as alterações de estado e o ciclo de vida do componente
+- nunca devemos alterar o estado diretamente
+- devolve uma variável que eu posso referenciair para saber qual estado está guardado dentro daquele componente
+- guarda informações sobre um componente mesmo se ele for re renderizado
+- mudar o estado diretamente na mão não é boa prática (por conta do ciclo de vida dos componentes react e sua forma de renderização)
+- dentro do array -> nome da variável (estado atual inicial) e a função que vou chamar para mudar o estado (set + nome da variável)
+- set funçào -> função que pode chamar para atribuir um novo valor para o seu estado
+
+FORM
+====
+- controlado
+- com uma única fonte de verdade
+- usando hooks
+
+VALIDAÇÃO DENTRO DO FORM
+========================
+- faço a validação antes de atribuit o estado com set
+- pego o event.target.value e coloco dentro de uma variável temporária
+- faço a validação nesta variável temporária
+- depois set o estado com ela
+- só forço a renderização uma única vez
+
+REGRAS DOS HOOKS
+================
+- use apenas no nível superior
+    . não usar hooks dentro de lógica condicional, loops ou funções aninhadas (funções dentro de funções)
+    . isso garante que os hooks serão chamados na mesma ordem a cada vez que o componente renderizar
+    . é isso que garante que o react preserve corretamente o estado dos hooks quando são usados várias chamadas a useState na mesma função, por exemplo
+- use hooks dentro de funções react
+    . dentro de componentes funcionais do react
+    . em funções que tenham o retorno de árvore de renderização
+
+PROPS
+=====
+- para passar uma propriedade para um componente
+- desconstrução das propriedades (objeto) como parâmetro da função
+- ou seja, tenho uma função no App que quero passar como parâmetro no componente
+- coloco ela como parâmetro (seu nome) entre {} -> desconstrução
+- e chamo ela dentro da função que vou usar 
+- ao recebermos propriedades dentro de um function component do react, ela ficam salvas em um objeto que é o primeiro parâmetro passado para essa função
+- injeção de dependência
+
+ONBLUR
+======
+- evento de quando vc tira o foco, sai do campo de input
