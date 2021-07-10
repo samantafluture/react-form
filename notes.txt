@@ -80,3 +80,16 @@ PROPS
 ONBLUR
 ======
 - evento de quando vc tira o foco, sai do campo de input
+
+MODELS
+======
+- pasta associada aos modelos de negócio, às regras de negócio
+- ex: validação de formulário
+
+CONTEXT
+=======
+- forma de criar/compor um grupo de dados ou funcionalidades que eu quero transmitir para vários componentes da minha app
+- podem estar abaixo do meu elemento pai
+- quando não quero que meu elemento pai conheça as informações
+- precisa declarar ativamente
+

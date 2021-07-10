@@ -1,96 +1,53 @@
-import React, { useState } from "react";
-import { Button, FormControlLabel, Switch, TextField } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import PersonalData from "./PersonalData";
+import UserData from "./UserData";
+import ShippingData from "./ShippingData";
+import { Typography, Stepper, Step, StepLabel } from "@material-ui/core";
 
-function RegistrationForm({ onSubmitForm, validateTin }) {
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [tin, setTin] = useState("");
-  const [promotions, setPromotions] = useState(true);
-  const [newsletter, setNewsletter] = useState(true);
-  const [errors, setErrors] = useState({ tin: { valid: true, text: "" } });
+function RegistrationForm({ onSubmitForm }) {
+  const [currentForm, setCurrentForm] = useState(0);
+  const [collectedData, setData] = useState({});
+
+  useEffect(() => {
+    if (currentForm === forms.length - 1) {
+      onSubmitForm(collectedData);
+    }
+  });
+
+  const forms = [
+    <UserData onSubmitForm={getData} />,
+    <PersonalData onSubmitForm={getData} />,
+    <ShippingData onSubmitForm={getData} />,
+    <Typography variant="h5">Thank you for registering!</Typography>,
+  ];
+
+  function getData(data) {
+    setData({ ...collectedData, ...data });
+    nextForm();
+  }
+
+  function nextForm() {
+    setCurrentForm(currentForm + 1);
+  }
 
   return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-        onSubmitForm({ name, surname, tin, promotions, newsletter });
-      }}
-    >
-      <TextField
-        value={name}
-        onChange={(event) => {
-          setName(event.target.value);
-        }}
-        id="name"
-        label="First Name"
-        variant="outlined"
-        margin="normal"
-        fullWidth
-      />
-
-      <TextField
-        value={surname}
-        onChange={(event) => {
-          setSurname(event.target.value);
-        }}
-        ƒ
-        id="surname"
-        label="Last Name"
-        variant="outlined"
-        margin="normal"
-        fullWidth
-      />
-
-      <TextField
-        value={tin}
-        onChange={(event) => {
-          setTin(event.target.value);
-        }}
-        onBlur={(event) => {
-          const isValid = validateTin(tin);
-          setErrors({ tin: isValid });
-        }}
-        error={!errors.tin.valid}
-        helperText={errors.tin.text}
-        id="tin"
-        label="TIN Number"
-        variant="outlined"
-        margin="normal"
-        fullWidth
-      />
-
-      <FormControlLabel
-        label="Promotions"
-        control={
-          <Switch
-            checked={promotions}
-            onChange={(event) => {
-              setPromotions(event.target.checked);
-            }}
-            name="promotions"
-            color="primary"
-          />
-        }
-      />
-
-      <FormControlLabel
-        label="Newsletter"
-        control={
-          <Switch
-            checked={newsletter}
-            onChange={(event) => {
-              setNewsletter(event.target.checked);
-            }}
-            name="promotions"
-            color="primary"
-          />
-        }
-      />
-
-      <Button type="submit" variant="contained" color="primary">
-        Register
-      </Button>
-    </form>
+    <>
+      <Stepper activeStep={currentForm}>
+        <Step>
+          <StepLabel>Login</StepLabel>
+        </Step>
+        <Step>
+          <StepLabel>Personal</StepLabel>
+        </Step>
+        <Step>
+          <StepLabel>Shipping</StepLabel>
+        </Step>
+        <Step>
+          <StepLabel>Finalize</StepLabel>
+        </Step>
+      </Stepper>
+      {forms[currentForm]}
+    </>
   );
 }
 
